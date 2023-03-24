@@ -1,7 +1,10 @@
 package com.coderscampus.domain;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Recipes {
-	public class Recipe {
+	
 	     private Integer cookingMinutes;
 	     private Boolean dairyFree;
 	     private Boolean glutenFree;
@@ -90,4 +93,4 @@ public class Recipes {
 	     
 	}
 
-}
+
