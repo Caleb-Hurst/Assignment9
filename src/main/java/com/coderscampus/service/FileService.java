@@ -14,39 +14,38 @@ import org.springframework.stereotype.Service;
 import com.coderscampus.domain.Recipes;
 @Service
 public class FileService {
-
-	private Recipes recipe;
-	
-	@Autowired
-	public FileService(Recipes recipe) {
-		this.recipe = recipe;
-	}
 	public List<Recipes> readFile() throws IOException {
-		List<Recipes> food = new ArrayList<>();
+		List<Recipes> recipes = new ArrayList<>();
 		Reader in = new FileReader("recipes.txt");
 		Iterable<CSVRecord> records = CSVFormat.DEFAULT
-				.withIgnoreSurroundingSpaces()
+				.withDelimiter(',')
+				.withIgnoreSurroundingSpaces(true)
 				.withHeader()
 				.withSkipHeaderRecord()
 				.parse(in);
-		for (CSVRecord record : records) {
-	        
-	        recipe.setCookingMinutes(Integer.parseInt(record.get(0)));
-	        recipe.setDairyFree(Boolean.parseBoolean(record.get(1)));
-	        recipe.setGlutenFree(Boolean.parseBoolean(record.get(2)));
-	        recipe.setInstructions(record.get(3));
-	        recipe.setPreparationMinutes(Double.parseDouble(record.get(4)));
-	        recipe.setPricePerServing(Double.parseDouble(record.get(5)));
-	        recipe.setReadyInMinutes(Integer.parseInt(record.get(6)));
-	        recipe.setServings(Integer.parseInt(record.get(7)));
-	        recipe.setSpoonacularScore(Double.parseDouble(record.get(8)));
-	        recipe.setTitle(record.get(9));
-	        recipe.setVegan(Boolean.parseBoolean(record.get(10)));
-	        recipe.setVegetarian(Boolean.parseBoolean(record.get(11)));
-
-	        food.add(recipe);
+		
+		for (CSVRecord record : records) {	       
+	        Integer cookMin = Integer.parseInt(record.get(0));
+	        Boolean dairyFree = Boolean.parseBoolean(record.get(1));
+	        Boolean glutenFree = Boolean.parseBoolean(record.get(2));
+	        String instructions  = record.get(3);
+	        Double prepMin = Double.parseDouble(record.get(4));
+	        Double pricePerServing = Double.parseDouble(record.get(5));
+	        Integer readyInMinutes = Integer.parseInt(record.get(6));
+	        Integer servings = Integer.parseInt(record.get(7));
+	        Double spoonacularScore = Double.parseDouble(record.get(8));
+	        String title = record.get(9);
+	        Boolean vegan = Boolean.parseBoolean(record.get(10));
+	        Boolean vegatarian = Boolean.parseBoolean(record.get(11));
+	        Recipes recipe = new Recipes
+	        		(cookMin, dairyFree,glutenFree
+	        		,instructions,prepMin
+	        		,pricePerServing,readyInMinutes
+	        		,servings,spoonacularScore,title
+	        		,vegan,vegatarian);
+	        recipes.add(recipe);
 	    }
-		return food;
+		return recipes;
 	}
 
 }
